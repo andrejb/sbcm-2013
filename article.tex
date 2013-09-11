@@ -2,24 +2,23 @@
 
 \documentclass[12pt]{article}
 
+\usepackage[utf8]{inputenc}
 \usepackage{sbc2003}
 \usepackage{graphicx,url}
-%\usepackage[brazil]{babel}   
-\usepackage[latin1]{inputenc}  
+\usepackage[english]{babel}   
+%\usepackage[latin1]{inputenc}  
 \usepackage[round,sort,nonamebreak]{natbib}
 
 \sloppy
 
-
 \title{FFT benchmark on Android devices: Java versus JNI}
 
+\author{Deusany Junior\inst{1} \and Max Rosan\inst{1} \and Andr√©
+Bianchi\inst{1} \and Marcelo Queiroz\inst{1}}
 
-\author{First Author\inst{1} \and 
-        Second Author\inst{2}}
 
-
-\address{Lab -- University\\
-         \email{firstauthor@university, secondauthor@university}}
+\address{Computer Science Department -- University of S√£o Paulo
+         \email{\{dj,max,ajb,mqz\}@ime.usp.br}}
 
 \graphicspath{{./img/}}
 
@@ -28,24 +27,25 @@
 
 \maketitle
 
-
+%-----------------------------------------------------------------------------
 \begin{abstract}
-
+%-----------------------------------------------------------------------------
 
 With  the increasing availability of mobile devices comes the possibility of  using (relatively) low-cost, wireless hardware embedded with plenty of  sensors to perform real-time Digital Signal Processing on live artistic  performances. This work presents the latests results of a benchmark  testing real-time FFT task of varying sizes using a Java implementation  and FFTW library with JNI. We collected results from 30 different  devices and here we discuss statistics of some specific combinations of  device model and operating system version. There is also a discussion  about the similarities between the mono thread and multi threaded  version of FFTW on multi core devices considering when developers can  take advantages of each approach..
 
-
 \end{abstract}
-    
 
+
+%-----------------------------------------------------------------------------
 \section{Introduction}
-
+%-----------------------------------------------------------------------------
 
 With  the increasing availability of mobile devices comes the possibility of  using (relatively) low-cost, wireless hardware embedded with plenty of  sensors to perform real-time Digital Signal Processing on live artistic  performances. This work presents the latests results of a benchmark  testing real-time FFT task of varying sizes using a Java implementation  and FFTW library with JNI. We collected results from 30 different  devices and here we discuss statistics of some specific combinations of  device model and operating system version. There is also a discussion  about the similarities between the mono thread and multi threaded  version of FFTW on multi core devices considering when developers can  take advantages of each approach.
 
 
+%-----------------------------------------------------------------------------
 \section{DSP on Android devices}
-
+%-----------------------------------------------------------------------------
 
 Some  mobile applications require DSP to react on users interaction. One
 famous algorithm that can help identifying users pitch during an  interaction
@@ -72,8 +72,6 @@ processing is getting more attention from developer's  eyes.
 
 \subsection{Real time DSP possibilities}
 
-
-
 Real  time processing is possible depending on the amount of job on
 background. From programming language perspective, low level are  prefered
 when talking about higher performance processing whether or not  the
@@ -88,7 +86,6 @@ code isn't available or  can't be ported to Java because of low-level issues.
 As a Java  application is executed by the Java virtual machine running on a
 platform, a native code can be fast than a code in Java. So JNI can be  used
 to implement small portions of critical-time code.
-
 
 Since  JNI is also supported on Android devices, it is possible to use all the
 JNI 1.6 features on Android, excepting some features described in
@@ -106,7 +103,6 @@ instead of trying to  reimplement another library in Java and still can get a
 better time  performance than a code with the same FFT algorithm, as the one
 used by FFTW, implemented in pure Java.
 
-
 Recent  efforts have been mixing the Android platform with traditional
 real-time DSP software, such as Csound \citep{LazzaLAC} and Pure  Data
 \citep{MakingMusicalApps}. Both of these approaches make use of the JNI
@@ -116,7 +112,6 @@ Our approach, on the other hand,  uses pure Java code to implement a minimal
 GUI and real-time DSP model,  and the use of native code represents a further
 step for development and  performance measurement.
 
-
 The  use of native code does not automatically imply better performance
 because it increases application complexity and also has a cost  associated
 with calls to non-Java code. There are works that aim to find  performance
@@ -125,7 +120,6 @@ that native code is indeed worse for some  applications \citep{6118781}.
 Nevertheless, for real-time signal processing  an implementation and
 comparison with native code is needed and here we  are proposing some results
 from our first experiments using JNI to test  native code.
-
 
 The  other approach that can help on getting real time processing on Android
 devices is using multi threaded methods. Nowadays the multicore devices
@@ -139,8 +133,9 @@ strange results depending on lots of  peculiarities indeed.
 (http://bigflake.com/systrace/)
 
 
+%-----------------------------------------------------------------------------
 \section{Comparison proposed between FFT versions}
-
+%-----------------------------------------------------------------------------
 
 To  get a feel of what it is like to use Android devices for real-time DSP, we
 have set up an environment to run arbitrary algorithms over an audio stream
@@ -149,7 +144,6 @@ parameter during execution. The software used is an Android DSP benchmarking
 developed by \cite{ajbmqzSMC2012}, with  open source code available at
 https://github.com/andrejb/DspBenchmarking/ with some modifications to test
 the methods selected on this work.
-
 
 Aiming  the comparison between different kinds of FFT algorithms performance
 on  Android devices to investigate devices' performance on common FFT
@@ -170,7 +164,6 @@ these methods is to confirm the advantages of  using the FFTW against normal
 FFT, and figure out the relevance of using  FFTW multi-thread on different
 size of blocks.
 
-
 All  performance measurements are made by an application started by the  user.
 User interactive assistance is kept at a bare minimum, by starting  the
 experiment and pressing a button to e-mail the results to the  authors. To
@@ -184,30 +177,43 @@ through  all benchmarking algorithms, and then sends an e-mail report with its
 results back to the authors.
 
 
+%-----------------------------------------------------------------------------
 \section{First results and discussion}
+%-----------------------------------------------------------------------------
+
 
 
 \begin{figure}[h!]
-  \centering
-    \reflectbox{%
-      \includegraphics[width=0.5\textwidth]{fft.png}}
-  \caption{. Benchmark of FFT Algorithm implemented in pure JAVA}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{img/FFT_ALGORITHM-2-b.pdf}
+\includegraphics[width=0.8\textwidth]{img/FFT_ALGORITHM-4-b.pdf}
+\end{center}
+\caption{Benchmark of FFT implemented in pure JAVA for larger block
+sizes (512 to 2048 samples) in devices with API version 2.X (above) and 4.X
+(below)}
+\label{fig:alg-fft}
 \end{figure}
 
-
 \begin{figure}[h!]
-  \centering
-    \reflectbox{%
-      \includegraphics[width=0.5\textwidth]{fftw.png}}
-  \caption{. Benchmark of FFTW mono thread}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{img/FFTW_MONO-2-b.pdf}
+\includegraphics[width=0.8\textwidth]{img/FFTW_MONO-4-b.pdf}
+\end{center}
+\caption{Benchmark of FFT using monothread FFTW library in native code for larger block
+sizes (512 to 2048 samples) in devices with API version 2.X (above) and 4.X
+(below)}
+\label{fig:alg-fft2}
 \end{figure}
 
-
 \begin{figure}[h!]
-  \centering
-    \reflectbox{%
-      \includegraphics[width=0.5\textwidth]{fftwm.png}}
-  \caption{. Benchmark of FFTW multi thread}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{img/FFTW_MULTI-2-b.pdf}
+\includegraphics[width=0.8\textwidth]{img/FFTW_MULTI-4-b.pdf}
+\end{center}
+\caption{Benchmark of FFT using multithread FFTW library in native code for larger block
+sizes (512 to 2048 samples) in devices with API version 2.X (above) and 4.X
+(below)}
+\label{fig:alg-fft2}
 \end{figure}
 
 
@@ -224,19 +230,21 @@ multhread, it is executed after FFTW monothread and therefore there is no
 overhead for the initialization of the library.
 
 
-It's also possible to notice that FFTW ha a worse performance when it is used
+It's also possible to notice that FFTW has a worse performance when it is used
 with multiple threads. It so happens that kernel of Android shifts the threads
 of a program to different cores provided that they are CPU-intensive and has
 been running for a sustained period, the threads created by FFTW are
 CPU-intensive, however the blocks tested are not large enough to make the
-threads be shifted to different cores. In [http://bigflake.com/systrace/]
+threads be shifted to different cores. In \cite{systrace}
 there some experiments using systrace
-[http://developer.android.com/tools/debugging/systrace.html] that point out
+\cite{systraceandroid} that point out
 what happens to CPU-intensive threads on an Android multicore device. Some
-Android devices, like XXX and YYY, have all the cores enabled all the time,
-but others, like ZZZ, enable additional cores according to the conditions
-explained before. It is said that it happens because turning another core on
-is a expensive process in energetic terms, so Android tries to keep 
+Android devices, like Sony Xperia U \cite{xperiauspecs}, have all the cores enabled all the time,
+but others, like Motorola Xoom2 [ref], enable additional cores according to the conditions
+explained before. It happens because turning another core on
+is a expensive process in energetic terms, so Android tries to keep  some cores
+disabled until there is an application CPU-intensive need them for a considerable
+time interval \cite{systrace}.
 
 
 [ref] 
@@ -244,26 +252,34 @@ is a expensive process in energetic terms, so Android tries to keep
 
 \subsection{ Conclusion and future work}
 
+The FFT is an algorithm widely used in signal processing applications. Applications like speech recognition and audio edition can be found on mobile devices like the Android ones, for example. Considering how powerful the CPU in those devices are nowadays, executing FFT on them can be a better option than transfering data blocks to a server side. It was showed here that it is possible to use FFT even in applications with real-time processing requirements. Besides, the performances of a library FFT implemented in pure Java and FFTW with JNI were compared.
+
+The FFT implemented purely in Java has a worse perfomance than the implementation using FFTW through JNI. So using the library FFTW with JNI can be a better option than using another one implemented in pure Java or implementing a library from scratch. On other hand it is expensive to load a dynamic library for using JNI, so FFTW got much more time than FFT to compute the first block, even though it was faster than FFT to compute the other blocks.
+
+The option of FFTW for doing the FFT algorithm calculations in parallel by using threads was also verified. It is expected that doing calculations in parallel reduces the time needed to compute the FFT. In order to implement those calculations in parallel, FFTW uses threads. Threads are expensive and unnecessary in devices with only one core, so on devices that contain only one core FFTW multithread had a worse performance than FFTW monothread. However, depending on device, Android has scheduling politics that shift threads to different cores only if it has been running for considerable time and it is CPU-intensive. Due to those politics and the size of the blocks, that FFTW multithread had a worse performance even on devices where there are more than one CPU core. So it is interesting to use threads provided that those threads keep running for a long enough time. 
+
+
 \begin{itemize}
 
-    \item FFT perdeu para FFTW
+
+    \item FFT perdeu para FFTW [x]
 
 
-    \item FFTW teve problemas para inicializaÁ„o mas conseguiu superar a FFT
-    nos outros casos independente disso
+    \item FFTW teve problemas para inicializa√ß√£o mas conseguiu superar a FFT
+    nos outros casos independente disso [x]
     http://gcc.gnu.org/ml/gcc/2004-06/msg01956.html
 
 
-    \item LimitaÁıes de dispositivos devem ser consideradas
+    \item Limita√ß√µes de dispositivos devem ser consideradas [x]
     http://developer.android.com/training/articles/perf-jni.html\#unsupported
 
 
-    \item FFTW  multithread n„o superou FFTW mono thread por n„o requisitar
-    muito do  processador e assim o processador n„o atribui os processos a
-    n˙cleos  diferentes 
+    \item FFTW  multithread n√£o superou FFTW mono thread por n√£o requisitar
+    muito do  processador e assim o processador n√£o atribui os processos a
+    n√∫cleos  diferentes [x]
 
 
-    \item SÛ h· vantagem em uso de multithread se o trabalho for muito grande
+    \item S√≥ h√° vantagem em uso de multithread se o trabalho for muito grande [x]
 
 
     \item We  are preparing new tests including FFT to get a better overview
@@ -292,20 +308,21 @@ is a expensive process in energetic terms, so Android tries to keep
 \end{itemize}
 
 
-\section{Acknowledgements}
-We would like to thank the members of the Computer Music Group (http://compmus.ime.usp.br/en/)  of the Computer Science Department of the Institute of Mathematics and  Statistics of the University of S„o Paulo. This work has been supported  by the funding agencies CAPES and FAPESP (grant 2008/08632-8).
+%\section{Acknowledgements}
+%We would like to thank the members of the Computer Music Group
+%(http://compmus.ime.usp.br/en/)  of the Computer Science Department of the
+%Institute of Mathematics and  Statistics of the University of S√£o Paulo. This
+%work has been supported  by the funding agencies CAPES and FAPESP (grant
+%2008/08632-8).
 
 
+%-----------------------------------------------------------------------------
 \section{References}
-
-
+%-----------------------------------------------------------------------------
 
 \bibliographystyle{apalike}
 
-
 \bibliography{references}
 
-
 \end{document}
-
 

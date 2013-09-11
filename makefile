@@ -7,7 +7,7 @@ $(pdfname): article.tex *.tex *.bib
 	bibtex `basename $@ .pdf`
 #	makeglossaries `basename $@ .pdf`
 	pdflatex -halt-on-error -jobname $(@:.pdf=) $<
-	pdflatex -shell-escape -halt-on-error -jobname $(@:.pdf=) $<
+#	pdflatex -shell-escape -halt-on-error -jobname $(@:.pdf=) $<
 
 clean:
 	rm -rf *.{log,bbl,aux,dvi,backup,blg,toc,bak,out,acn,acr,alg,glg,glo,gls,ist,xdy}
